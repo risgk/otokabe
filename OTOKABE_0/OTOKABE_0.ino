@@ -3,20 +3,20 @@
 ////////////////////////////////////////////////////////////////
 
 #if 1
-#define SERIAL_SPEED        (38400)
+#define SERIAL_SPEED        (38400) // Serial
 #else
-#define SERIAL_SPEED        (31250)
+#define SERIAL_SPEED        (31250) // MIDI
 #endif
 
-#define ANALOG_THRESHOLD    (512)
+#define ANALOG_THRESHOLD    (100)   // 1 to 1023
 #define NOTE_ON_VELOCITY    (100)
-#define DEFAULT_CH          (0)     // default MIDI channel
-#define ANTICHATTERING_WAIT (100)   // milliseconds
+#define DEFAULT_CH          (0)     // Default MIDI channel
+#define ANTICHATTERING_WAIT (100)   // msec
 #define INVALID             (0xFF)
 
 typedef struct {
   byte         value;            // HIGH or LOW
-  unsigned int valueChangedTime; // milliseconds
+  unsigned int valueChangedTime; // msec
   byte         midiCh;           // 0 to 15
   byte         noteNumber;       // 0 to 127 (INVALID if there is no sensor)
 } SENSOR_STATE;
@@ -84,7 +84,7 @@ byte readState(byte pin)
 
 #if 0
   Serial.print(pin);
-  Serial.print(' ');
+  Serial.print(':');
   Serial.println(analogValue);
 #endif
 
