@@ -62,13 +62,13 @@ void loop()
       unsigned int currentTime = millis();
 
       if (currentTime - s_sensorStates[i].valueChangedTime >= ANTICHATTERING_WAIT) {
-        byte currentState = readState(i);
+        byte sensorValue = readSensorValue(i);
 
-        if ((s_sensorStates[i].value == HIGH) && (currentState == LOW)) {
+        if ((s_sensorStates[i].value == HIGH) && (sensorValue == LOW)) {
           s_sensorStates[i].value = LOW;
           s_sensorStates[i].valueChangedTime = currentTime;
           sendMIDINoteOn(s_sensorStates[i].midiCh, s_sensorStates[i].noteNumber);
-        } else if ((s_sensorStates[i].value == LOW) && (currentState == HIGH)) {
+        } else if ((s_sensorStates[i].value == LOW) && (sensorValue == HIGH)) {
           s_sensorStates[i].value = HIGH;
           s_sensorStates[i].valueChangedTime = currentTime;
           sendMIDINoteOff(s_sensorStates[i].midiCh, s_sensorStates[i].noteNumber);
@@ -78,7 +78,7 @@ void loop()
   }
 }
 
-byte readState(byte pin)
+byte readSensorValue(byte pin)
 {
   int analogValue = analogRead(pin);
 
