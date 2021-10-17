@@ -1,2 +1,3 @@
-# otokabe
-Firmware for OTOKABE
+# Firmware for OTOKABE
+
+- Sketch for Arduino Mega 2560
