@@ -23,7 +23,7 @@ typedef struct {
 
 SENSOR_STATE s_sensorStates[] = {
   { HIGH, 0, DEFAULT_CH, 60      }, // Pin 54 (A0)
-#if 0
+#if 1
   { HIGH, 0, DEFAULT_CH, 61      }, // Pin 55 (A1)
   { HIGH, 0, DEFAULT_CH, 62      }, // Pin 56 (A2)
   { HIGH, 0, DEFAULT_CH, 63      }, // Pin 57 (A3)
@@ -36,9 +36,9 @@ SENSOR_STATE s_sensorStates[] = {
   { HIGH, 0, DEFAULT_CH, 70      }, // Pin 64 (A10)
   { HIGH, 0, DEFAULT_CH, 71      }, // Pin 65 (A11)
   { HIGH, 0, DEFAULT_CH, 72      }, // Pin 66 (A12)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // Pin 67 (A13)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // Pin 68 (A14)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // Pin 69 (A15)
+  { HIGH, 0, DEFAULT_CH, 73      }, // Pin 67 (A13)
+  { HIGH, 0, DEFAULT_CH, 74      }, // Pin 68 (A14)
+  { HIGH, 0, DEFAULT_CH, 75      }, // Pin 69 (A15)
 #endif
 };
 
