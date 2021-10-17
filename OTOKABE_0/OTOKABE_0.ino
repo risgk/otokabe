@@ -57,33 +57,33 @@ void setup()
 
 void loop()
 {
-  for (byte i = 0; i < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); i++) {
-    if (s_sensorStates[i].noteNumber != INVALID) {
+  for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
+    if (s_sensorStates[analogPin].noteNumber != INVALID) {
       unsigned int currentTime = millis();
 
-      if (currentTime - s_sensorStates[i].valueChangedTime >= ANTICHATTERING_WAIT) {
-        byte sensorValue = readSensorValue(i);
+      if (currentTime - s_sensorStates[analogPin].valueChangedTime >= ANTICHATTERING_WAIT) {
+        byte sensorValue = readSensorValue(analogPin);
 
-        if ((s_sensorStates[i].value == HIGH) && (sensorValue == LOW)) {
-          s_sensorStates[i].value = LOW;
-          s_sensorStates[i].valueChangedTime = currentTime;
-          sendMIDINoteOn(s_sensorStates[i].midiCh, s_sensorStates[i].noteNumber);
-        } else if ((s_sensorStates[i].value == LOW) && (sensorValue == HIGH)) {
-          s_sensorStates[i].value = HIGH;
-          s_sensorStates[i].valueChangedTime = currentTime;
-          sendMIDINoteOff(s_sensorStates[i].midiCh, s_sensorStates[i].noteNumber);
+        if ((s_sensorStates[analogPin].value == HIGH) && (sensorValue == LOW)) {
+          s_sensorStates[analogPin].value = LOW;
+          s_sensorStates[analogPin].valueChangedTime = currentTime;
+          sendMIDINoteOn(s_sensorStates[analogPin].midiCh, s_sensorStates[analogPin].noteNumber);
+        } else if ((s_sensorStates[analogPin].value == LOW) && (sensorValue == HIGH)) {
+          s_sensorStates[analogPin].value = HIGH;
+          s_sensorStates[analogPin].valueChangedTime = currentTime;
+          sendMIDINoteOff(s_sensorStates[analogPin].midiCh, s_sensorStates[analogPin].noteNumber);
         }
       }
     }
   }
 }
 
-byte readSensorValue(byte pin)
+byte readSensorValue(byte analogPin)
 {
-  int analogValue = analogRead(pin);
+  int analogValue = analogRead(analogPin);
 
 #if 0
-  Serial.print(pin);
+  Serial.print(analogPin);
   Serial.print(':');
   Serial.println(analogValue);
 #endif
