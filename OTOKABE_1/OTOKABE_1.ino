@@ -8,7 +8,6 @@
 #define SERIAL_SPEED        (31250) // MIDI
 #endif
 
-#define ANALOG_THRESHOLD    (100)   // 1 to 1023
 #define NOTE_ON_VELOCITY    (100)
 #define DEFAULT_CH          (0)     // Default MIDI channel
 #define ANTICHATTERING_WAIT (100)   // msec
@@ -19,6 +18,7 @@ typedef struct {
   unsigned int valueChangedTime; // msec
   byte         midiCh;           // 0 to 15
   byte         noteNumber;       // 0 to 127 (INVALID if there is no sensor)
+  int          analogThreshold;  // Analog threshold
 } SENSOR_STATE;
 
 SENSOR_STATE s_sensorStates[] = {
@@ -53,6 +53,19 @@ void setup()
 #endif
 
   Serial.begin(SERIAL_SPEED);
+
+  // Determine thresholds from initial analog values
+  for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
+    if (s_sensorStates[analogPin].noteNumber != INVALID) {
+      int initialAnalogValue = analogRead(analogPin);
+      s_sensorStates[analogPin].analogThreshold = initialAnalogValue * 0.5;
+#if 0
+      Serial.print(analogPin);
+      Serial.print("(Threshold):");
+      Serial.println(s_sensorStates[analogPin].analogThreshold);
+#endif
+    }
+  }
 }
 
 void loop()
@@ -62,7 +75,7 @@ void loop()
       unsigned int currentTime = millis();
 
       if (currentTime - s_sensorStates[analogPin].valueChangedTime >= ANTICHATTERING_WAIT) {
-        byte sensorValue = readSensorValue(analogPin);
+        byte sensorValue = readSensorValue(analogPin, s_sensorStates[analogPin].analogThreshold);
 
         if ((s_sensorStates[analogPin].value == HIGH) && (sensorValue == LOW)) {
           s_sensorStates[analogPin].value = LOW;
@@ -78,7 +91,7 @@ void loop()
   }
 }
 
-byte readSensorValue(byte analogPin)
+byte readSensorValue(byte analogPin, int analogThreshold)
 {
   int analogValue = analogRead(analogPin);
 
@@ -88,7 +101,7 @@ byte readSensorValue(byte analogPin)
   Serial.println(analogValue);
 #endif
 
-  if (analogValue >= ANALOG_THRESHOLD) {
+  if (analogValue >= analogThreshold) {
     return HIGH;
   }
 
