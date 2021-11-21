@@ -46,9 +46,6 @@ void setup()
   for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
     if (s_sensorStates[analogPin].noteNumber != INVALID) {
       int initialAnalogValue = analogRead(analogPin);
-#if 0
-      sendMIDIControlChange(analogPin, 0x50, initialAnalogValue >> 3);
-#endif
       s_sensorStates[analogPin].analogThreshold = initialAnalogValue * 0.5;
     }
   }
