@@ -4,12 +4,6 @@
 
 #include "MIDIUSB.h"
 
-#if 1
-#define SERIAL_SPEED        (38400) // Serial
-#else
-#define SERIAL_SPEED        (31250) // MIDI
-#endif
-
 #define NOTE_ON_VELOCITY    (100)
 #define DEFAULT_CH          (0)     // Default MIDI channel
 #define ANTICHATTERING_WAIT (100)   // msec
@@ -47,11 +41,6 @@ void setup()
   ADCSRA = ADCSRA & 0xf8;
   ADCSRA = ADCSRA | 0x04;
 #endif
-
-  Serial.begin(SERIAL_SPEED);
-  while (!Serial) {
-    ;
-  }
 
   // Determine thresholds from initial analog values
   for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
