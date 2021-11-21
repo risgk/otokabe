@@ -46,12 +46,10 @@ void setup()
   for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
     if (s_sensorStates[analogPin].noteNumber != INVALID) {
       int initialAnalogValue = analogRead(analogPin);
-      s_sensorStates[analogPin].analogThreshold = initialAnalogValue * 0.5;
 #if 0
-      Serial.print(analogPin);
-      Serial.print("(Threshold):");
-      Serial.println(s_sensorStates[analogPin].analogThreshold);
+      sendMIDIControlChange(analogPin, 0x50, initialAnalogValue >> 3);
 #endif
+      s_sensorStates[analogPin].analogThreshold = initialAnalogValue * 0.5;
     }
   }
 }
@@ -84,9 +82,7 @@ byte readSensorValue(byte analogPin, int analogThreshold)
   int analogValue = analogRead(analogPin);
 
 #if 0
-  Serial.print(analogPin);
-  Serial.print(':');
-  Serial.println(analogValue);
+  sendMIDIControlChange(analogPin, 0x50, analogValue >> 3);
 #endif
 
   if (analogValue >= analogThreshold) {
