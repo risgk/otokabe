@@ -2,6 +2,8 @@
 // Firmware for OTOKABE (Sketches for Arduino Leonardo) //
 //////////////////////////////////////////////////////////
 
+#include "MIDIUSB.h"
+
 #if 1
 #define SERIAL_SPEED        (38400) // Serial
 #else
@@ -14,26 +16,26 @@
 #define INVALID             (0xFF)
 
 typedef struct {
+  int          analogThreshold;  // Analog threshold
   byte         value;            // HIGH or LOW
   unsigned int valueChangedTime; // msec
   byte         midiCh;           // 0 to 15
   byte         noteNumber;       // 0 to 127 (INVALID if there is no sensor)
-  int          analogThreshold;  // Analog threshold
 } SENSOR_STATE;
 
 SENSOR_STATE s_sensorStates[] = {
-  { HIGH, 0, DEFAULT_CH, 60      }, // A0
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A1
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A2
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A3
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A4
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A5
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A6 (D4)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A7 (D6)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A8 (D8)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A9 (D9)
-  { HIGH, 0, DEFAULT_CH, INVALID }, // A10 (D10)
-  { HIGH, 0, DEFAULT_CH, 71      }, // A11 (D12)
+  { 0, HIGH, 0, DEFAULT_CH, 60      }, // A0
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A1
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A2
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A3
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A4
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A5
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A6 (D4)
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A7 (D6)
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A8 (D8)
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A9 (D9)
+  { 0, HIGH, 0, DEFAULT_CH, INVALID }, // A10 (D10)
+  { 0, HIGH, 0, DEFAULT_CH, 71      }, // A11 (D12)
 };
 
 
@@ -107,24 +109,21 @@ byte readSensorValue(byte analogPin, int analogThreshold)
 
 void sendMIDINoteOn(byte midiCh, byte noteNumber)
 {
-  Serial.write(0x90 | midiCh);
-  Serial.write(noteNumber);
-  Serial.write(NOTE_ON_VELOCITY);
-  Serial.flush();
+  midiEventPacket_t event = {0x09, (uint8_t) (0x90 | midiCh), noteNumber, NOTE_ON_VELOCITY};
+  MidiUSB.sendMIDI(event);
+  MidiUSB.flush();
 }
 
 void sendMIDINoteOff(byte midiCh, byte noteNumber)
 {
-  Serial.write(0x80 | midiCh);
-  Serial.write(noteNumber);
-  Serial.write(static_cast<uint8_t>(0x00));
-  Serial.flush();
+  midiEventPacket_t event = {0x08, (uint8_t) (0x80 | midiCh), noteNumber, 0x00};
+  MidiUSB.sendMIDI(event);
+  MidiUSB.flush();
 }
 
-void sendMIDIConstolChange(byte midiCh, byte value)
+void sendMIDIControlChange(byte midiCh, byte controlNumber, byte value)
 {
-  Serial.write(0xE0 | midiCh);
-  Serial.write(static_cast<uint8_t>(0x00));
-  Serial.write(value);
-  Serial.flush();
+  midiEventPacket_t event = {0x0B, (uint8_t) (0xB0 | midiCh), controlNumber, value};
+  MidiUSB.sendMIDI(event);
+  MidiUSB.flush();
 }
