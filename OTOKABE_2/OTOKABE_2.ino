@@ -100,10 +100,16 @@ void loop()
           s_sensorStates[analogPin].digitalValue = LOW;
           s_sensorStates[analogPin].digitalValueChangedTime = currentTime;
           sendMIDINoteOn(s_sensorStates[analogPin].channelZeroOrigin, s_sensorStates[analogPin].noteNumber, NOTE_ON_VELOCITY);
+#if 1
+          digitalWrite(LED_BUILTIN, HIGH);
+#endif
         } else if ((s_sensorStates[analogPin].digitalValue == LOW) && (sensorValue == HIGH)) {
           s_sensorStates[analogPin].digitalValue = HIGH;
           s_sensorStates[analogPin].digitalValueChangedTime = currentTime;
           sendMIDINoteOff(s_sensorStates[analogPin].channelZeroOrigin, s_sensorStates[analogPin].noteNumber, NOTE_OFF_VELOCITY);
+#if 1
+          digitalWrite(LED_BUILTIN, LOW);
+#endif
         }
       }
     }
@@ -139,10 +145,6 @@ void sendMIDINoteOn(byte channelZeroOrigin, byte noteNumber, byte velocity)
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
-
-#if 1
-  digitalWrite(LED_BUILTIN, HIGH);
-#endif
 }
 
 void sendMIDINoteOff(byte channelZeroOrigin, byte noteNumber, byte velocity)
@@ -153,10 +155,6 @@ void sendMIDINoteOff(byte channelZeroOrigin, byte noteNumber, byte velocity)
   midiEventPacket_t event = {0x08, (uint8_t) (0x80 | channelZeroOrigin), noteNumber, velocity};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
-#endif
-
-#if 1
-  digitalWrite(LED_BUILTIN, LOW);
 #endif
 }
 
