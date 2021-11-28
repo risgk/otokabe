@@ -22,36 +22,36 @@ typedef struct {
   byte         digitalValue;             // HIGH or LOW
   unsigned int digitalValueChangedTime;  // msec
   byte         channelZeroOrigin;        // 0 to 15
-  byte         noteNumber;               // 0 to 127 (INVALID if there is no sensor)
+  byte         noteNumber;               // 0 to 127, INVALID (0xFF) if there is no sensor
 } SENSOR_STATE;
 
 SENSOR_STATE s_sensorStates[] = {
 #if (BOARD_NUMBER == 0)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 60      }, // A0
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 61      }, // A1
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 62      }, // A2
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 63      }, // A3
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 64      }, // A4
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 65      }, // A5
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 66      }, // A6 (D4)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 67      }, // A7 (D6)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 68      }, // A8 (D8)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 69      }, // A9 (D9)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 70      }, // A10 (D10)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 71      }, // A11 (D12)
-#elif (BOARD_NUMBER == 1)
   { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 48      }, // A0
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 49      }, // A1
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 50      }, // A2
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 51      }, // A3
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 52      }, // A4
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 53      }, // A5
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 54      }, // A6 (D4)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 55      }, // A7 (D6)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 56      }, // A8 (D8)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 57      }, // A9 (D9)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 58      }, // A10 (D10)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 59      }, // A11 (D12)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 50      }, // A1
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 52      }, // A2
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 53      }, // A3
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 55      }, // A4
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 57      }, // A5
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 59      }, // A6 (D4)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 60      }, // A7 (D6)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 62      }, // A8 (D8)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 64      }, // A9 (D9)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 65      }, // A10 (D10)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 67      }, // A11 (D12)
+#elif (BOARD_NUMBER == 1)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 69      }, // A0
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 71      }, // A1
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 72      }, // A2
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 74      }, // A3
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 76      }, // A4
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 77      }, // A5
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 79      }, // A6 (D4)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 81      }, // A7 (D6)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 83      }, // A8 (D8)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 84      }, // A9 (D9)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, INVALID }, // A10 (D10)
+  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, INVALID }, // A11 (D12)
 #endif
 };
 
