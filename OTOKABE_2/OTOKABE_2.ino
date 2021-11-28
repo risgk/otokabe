@@ -81,6 +81,10 @@ void setup()
   MIDI.setHandleControlChange(handlerControlChange);
   MIDI.begin();
   MIDI.turnThruOff();
+
+#if 1
+  pinMode(LED_BUILTIN, OUTPUT);
+#endif
 }
 
 void loop()
@@ -135,6 +139,10 @@ void sendMIDINoteOn(byte channelZeroOrigin, byte noteNumber, byte velocity)
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
+
+#if 1
+  digitalWrite(LED_BUILTIN, HIGH);
+#endif
 }
 
 void sendMIDINoteOff(byte channelZeroOrigin, byte noteNumber, byte velocity)
@@ -145,6 +153,10 @@ void sendMIDINoteOff(byte channelZeroOrigin, byte noteNumber, byte velocity)
   midiEventPacket_t event = {0x08, (uint8_t) (0x80 | channelZeroOrigin), noteNumber, velocity};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
+#endif
+
+#if 1
+  digitalWrite(LED_BUILTIN, LOW);
 #endif
 }
 
