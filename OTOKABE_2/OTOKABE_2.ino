@@ -21,7 +21,7 @@ typedef struct {
   int          analogThreshold;  // Analog threshold
   byte         value;            // HIGH or LOW
   unsigned int valueChangedTime; // msec
-  byte         midiCh;           // 0 to 15
+  byte         midiChZeroOrigin; // 0 to 15
   byte         noteNumber;       // 0 to 127 (INVALID if there is no sensor)
 } SENSOR_STATE;
 
@@ -79,6 +79,7 @@ void setup()
   MIDI.setHandleNoteOff(handlerNoteOff);
   MIDI.setHandleControlChange(handlerControlChange);
   MIDI.begin();
+  MIDI.turnThruOff();
 }
 
 void loop()
@@ -93,11 +94,11 @@ void loop()
         if ((s_sensorStates[analogPin].value == HIGH) && (sensorValue == LOW)) {
           s_sensorStates[analogPin].value = LOW;
           s_sensorStates[analogPin].valueChangedTime = currentTime;
-          sendMIDINoteOn(s_sensorStates[analogPin].midiCh, s_sensorStates[analogPin].noteNumber, NOTE_ON_VELOCITY);
+          sendMIDINoteOn(s_sensorStates[analogPin].midiChZeroOrigin, s_sensorStates[analogPin].noteNumber, NOTE_ON_VELOCITY);
         } else if ((s_sensorStates[analogPin].value == LOW) && (sensorValue == HIGH)) {
           s_sensorStates[analogPin].value = HIGH;
           s_sensorStates[analogPin].valueChangedTime = currentTime;
-          sendMIDINoteOff(s_sensorStates[analogPin].midiCh, s_sensorStates[analogPin].noteNumber, 64);
+          sendMIDINoteOff(s_sensorStates[analogPin].midiChZeroOrigin, s_sensorStates[analogPin].noteNumber, 64);
         }
       }
     }
@@ -124,53 +125,53 @@ byte readSensorValue(byte analogPin, int analogThreshold)
   return LOW;
 }
 
-void sendMIDINoteOn(byte midiCh, byte noteNumber, byte velocity)
+void sendMIDINoteOn(byte midiChZeroOrigin, byte noteNumber, byte velocity)
 {
-  MIDI.sendNoteOn(noteNumber, velocity, midiCh);
+  MIDI.sendNoteOn(noteNumber, velocity, midiChZeroOrigin + 1);
 
 #if defined(ENABLE_MIDIUSB)
-  midiEventPacket_t event = {0x09, (uint8_t) (0x90 | midiCh), noteNumber, NOTE_ON_VELOCITY};
+  midiEventPacket_t event = {0x09, (uint8_t) (0x90 | midiChZeroOrigin), noteNumber, NOTE_ON_VELOCITY};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
 }
 
-void sendMIDINoteOff(byte midiCh, byte noteNumber, byte velocity)
+void sendMIDINoteOff(byte midiChZeroOrigin, byte noteNumber, byte velocity)
 {
-  MIDI.sendNoteOff(noteNumber, velocity, midiCh);
+  MIDI.sendNoteOff(noteNumber, velocity, midiChZeroOrigin + 1);
 
 #if defined(ENABLE_MIDIUSB)
-  midiEventPacket_t event = {0x08, (uint8_t) (0x80 | midiCh), noteNumber, velocity};
+  midiEventPacket_t event = {0x08, (uint8_t) (0x80 | midiChZeroOrigin), noteNumber, velocity};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
 }
 
-void sendMIDIControlChange(byte midiCh, byte controlNumber, byte value)
+void sendMIDIControlChange(byte midiChZeroOrigin, byte controlNumber, byte value)
 {
-  MIDI.sendControlChange(controlNumber, value, midiCh);
+  MIDI.sendControlChange(controlNumber, value, midiChZeroOrigin + 1);
 
 #if defined(ENABLE_MIDIUSB)
-  midiEventPacket_t event = {0x0B, (uint8_t) (0xB0 | midiCh), controlNumber, value};
+  midiEventPacket_t event = {0x0B, (uint8_t) (0xB0 | midiChZeroOrigin), controlNumber, value};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
 }
 
-void handlerNoteOn(byte channel, byte note, byte velocity)
+void handlerNoteOn(byte channelOneOrigin, byte note, byte velocity)
 {
   // Forwarding
-  sendMIDINoteOn(channel, note, velocity);
+  sendMIDINoteOn(channelOneOrigin - 1, note, velocity);
 }
 
-void handlerNoteOff(byte channel, byte note, byte velocity)
+void handlerNoteOff(byte channelOneOrigin, byte note, byte velocity)
 {
   // Forwarding
-  sendMIDINoteOff(channel, note, velocity);
+  sendMIDINoteOff(channelOneOrigin - 1, note, velocity);
 }
 
-void handlerControlChange(byte channel, byte note, byte value)
+void handlerControlChange(byte channelOneOrigin, byte note, byte value)
 {
   // Forwarding
-  sendMIDIControlChange(channel, note, value);
+  sendMIDIControlChange(channelOneOrigin - 1, note, value);
 }
