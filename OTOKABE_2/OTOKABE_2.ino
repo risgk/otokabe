@@ -13,6 +13,7 @@
 #endif
 
 #define NOTE_ON_VELOCITY            (100)
+#define NOTE_OFF_VELOCITY           (64)
 #define DEFAULT_CHANNEL_ZERO_ORIGIN (0)
 #define ANTICHATTERING_WAIT_MSEC    (100)
 #define INVALID                     (0xFF)
@@ -98,7 +99,7 @@ void loop()
         } else if ((s_sensorStates[analogPin].digitalValue == LOW) && (sensorValue == HIGH)) {
           s_sensorStates[analogPin].digitalValue = HIGH;
           s_sensorStates[analogPin].digitalValueChangedTime = currentTime;
-          sendMIDINoteOff(s_sensorStates[analogPin].channelZeroOrigin, s_sensorStates[analogPin].noteNumber, 64);
+          sendMIDINoteOff(s_sensorStates[analogPin].channelZeroOrigin, s_sensorStates[analogPin].noteNumber, NOTE_OFF_VELOCITY);
         }
       }
     }
@@ -130,7 +131,7 @@ void sendMIDINoteOn(byte channelZeroOrigin, byte noteNumber, byte velocity)
   MIDI.sendNoteOn(noteNumber, velocity, channelZeroOrigin + 1);
 
 #if defined(ENABLE_MIDIUSB)
-  midiEventPacket_t event = {0x09, (uint8_t) (0x90 | channelZeroOrigin), noteNumber, NOTE_ON_VELOCITY};
+  midiEventPacket_t event = {0x09, (uint8_t) (0x90 | channelZeroOrigin), noteNumber, velocity};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
