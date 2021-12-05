@@ -14,46 +14,45 @@
 
 #define NOTE_ON_VELOCITY            (100)
 #define NOTE_OFF_VELOCITY           (64)
-#define DEFAULT_CHANNEL_ZERO_ORIGIN (0)
 #define ANTICHATTERING_WAIT_MSEC    (100)
 #define INVALID                     (0xFF)
 #define LED_LIGHTING_TIME_MSEC      (100)
 
 typedef struct {
   int          analogThreshold;          // Analog threshold
-  byte         digitalValue;             // HIGH or LOW
   unsigned int digitalValueChangedTime;  // msec
+  byte         digitalValue;             // HIGH or LOW
   byte         channelZeroOrigin;        // 0 to 15
   byte         noteNumber;               // 0 to 127, INVALID (0xFF) if there is no sensor
 } SENSOR_STATE;
 
 SENSOR_STATE s_sensorStates[] = {
 #if (BOARD_NUMBER == 0)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 60      }, // A0
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 61      }, // A1
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 62      }, // A2
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 63      }, // A3
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 64      }, // A4
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 65      }, // A5
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 66      }, // A6 (D4)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 67      }, // A7 (D6)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 68      }, // A8 (D8)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 69      }, // A9 (D9)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 70      }, // A10 (D10)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 71      }, // A11 (D12)
+  { 0, 0, HIGH, 0, 60      }, // A0
+  { 0, 0, HIGH, 0, 61      }, // A1
+  { 0, 0, HIGH, 0, 62      }, // A2
+  { 0, 0, HIGH, 0, 63      }, // A3
+  { 0, 0, HIGH, 0, 64      }, // A4
+  { 0, 0, HIGH, 0, 65      }, // A5
+  { 0, 0, HIGH, 0, 66      }, // A6 (D4)
+  { 0, 0, HIGH, 0, 67      }, // A7 (D6)
+  { 0, 0, HIGH, 0, 68      }, // A8 (D8)
+  { 0, 0, HIGH, 0, 69      }, // A9 (D9)
+  { 0, 0, HIGH, 0, 70      }, // A10 (D10)
+  { 0, 0, HIGH, 0, 71      }, // A11 (D12)
 #elif (BOARD_NUMBER == 1)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 72      }, // A0
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 73      }, // A1
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 74      }, // A2
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 75      }, // A3
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 76      }, // A4
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 77      }, // A5
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 78      }, // A6 (D4)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 79      }, // A7 (D6)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 80      }, // A8 (D8)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 81      }, // A9 (D9)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 82      }, // A10 (D10)
-  { 0, HIGH, 0, DEFAULT_CHANNEL_ZERO_ORIGIN, 83      }, // A11 (D12)
+  { 0, 0, HIGH, 0, 72      }, // A0
+  { 0, 0, HIGH, 0, 73      }, // A1
+  { 0, 0, HIGH, 0, 74      }, // A2
+  { 0, 0, HIGH, 0, 75      }, // A3
+  { 0, 0, HIGH, 0, 76      }, // A4
+  { 0, 0, HIGH, 0, 77      }, // A5
+  { 0, 0, HIGH, 0, 78      }, // A6 (D4)
+  { 0, 0, HIGH, 0, 79      }, // A7 (D6)
+  { 0, 0, HIGH, 0, 80      }, // A8 (D8)
+  { 0, 0, HIGH, 0, 81      }, // A9 (D9)
+  { 0, 0, HIGH, 0, 82      }, // A10 (D10)
+  { 0, 0, HIGH, 0, 83      }, // A11 (D12)
 #endif
 };
 
@@ -93,7 +92,7 @@ void loop()
     if (s_sensorStates[analogPin].noteNumber != INVALID) {
       unsigned int currentTime = millis();
 
-      if (currentTime - s_sensorStates[analogPin].digitalValueChangedTime >= ANTICHATTERING_WAIT_MSEC) {
+      if ((currentTime - s_sensorStates[analogPin].digitalValueChangedTime) >= ANTICHATTERING_WAIT_MSEC) {
         byte sensorValue = readSensorDigitalValue(analogPin, s_sensorStates[analogPin].analogThreshold);
 
         if ((s_sensorStates[analogPin].digitalValue == HIGH) && (sensorValue == LOW)) {
@@ -197,7 +196,7 @@ void checkLed()
   if (s_LedLit) {
     unsigned int currentTime = millis();
 
-    if (currentTime - s_LedlitTime >= LED_LIGHTING_TIME_MSEC) {
+    if ((currentTime - s_LedlitTime) >= LED_LIGHTING_TIME_MSEC) {
       s_LedLit = false;
       digitalWrite(LED_BUILTIN, LOW);
     }
