@@ -2,6 +2,7 @@
 // Firmware for OTOKABE (Sketches for Arduino Leonardo) //
 //////////////////////////////////////////////////////////
 #define CONFIG_BOARD_NUMBER (0)  // Board 1 (TX) -> (RX) Board 0 -> (USB Host)
+                                 //                              -> (D13 LED Out)
 
 
 
