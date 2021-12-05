@@ -17,6 +17,7 @@
 #define DEFAULT_CHANNEL_ZERO_ORIGIN (0)
 #define ANTICHATTERING_WAIT_MSEC    (100)
 #define INVALID                     (0xFF)
+#define LED_LIGHTING_TIME_MSEC      (100)
 
 typedef struct {
   int          analogThreshold;          // Analog threshold
@@ -58,15 +59,16 @@ SENSOR_STATE s_sensorStates[] = {
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
+boolean      s_LedLit     = false;
+unsigned int s_LedlitTime = 0;  // msec
+
 
 
 void setup()
 {
-#if 1
   // Speed up analogRead()
   ADCSRA = ADCSRA & 0xf8;
   ADCSRA = ADCSRA | 0x04;
-#endif
 
   // Determine thresholds from initial analog values
   for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
@@ -82,9 +84,7 @@ void setup()
   MIDI.begin();
   MIDI.turnThruOff();
 
-#if 1
   pinMode(LED_BUILTIN, OUTPUT);
-#endif
 }
 
 void loop()
@@ -100,16 +100,10 @@ void loop()
           s_sensorStates[analogPin].digitalValue = LOW;
           s_sensorStates[analogPin].digitalValueChangedTime = currentTime;
           sendMIDINoteOn(s_sensorStates[analogPin].channelZeroOrigin, s_sensorStates[analogPin].noteNumber, NOTE_ON_VELOCITY);
-#if 1
-          digitalWrite(LED_BUILTIN, HIGH);
-#endif
         } else if ((s_sensorStates[analogPin].digitalValue == LOW) && (sensorValue == HIGH)) {
           s_sensorStates[analogPin].digitalValue = HIGH;
           s_sensorStates[analogPin].digitalValueChangedTime = currentTime;
           sendMIDINoteOff(s_sensorStates[analogPin].channelZeroOrigin, s_sensorStates[analogPin].noteNumber, NOTE_OFF_VELOCITY);
-#if 1
-          digitalWrite(LED_BUILTIN, LOW);
-#endif
         }
       }
     }
@@ -118,6 +112,8 @@ void loop()
 #if (BOARD_NUMBER == 0)
   MIDI.read();
 #endif
+
+  checkLed();
 }
 
 byte readSensorDigitalValue(byte analogPin, int analogThreshold)
@@ -145,6 +141,8 @@ void sendMIDINoteOn(byte channelZeroOrigin, byte noteNumber, byte velocity)
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 #endif
+
+  lightLed();
 }
 
 void sendMIDINoteOff(byte channelZeroOrigin, byte noteNumber, byte velocity)
@@ -185,4 +183,23 @@ void handlerControlChange(byte channelOneOrigin, byte noteNumber, byte value)
 {
   // Forwarding
   sendMIDIControlChange(channelOneOrigin - 1, noteNumber, value);
+}
+
+void lightLed()
+{
+  digitalWrite(LED_BUILTIN, HIGH);
+  s_LedlitTime = millis();
+  s_LedLit = true;
+}
+
+void checkLed()
+{
+  if (s_LedLit) {
+    unsigned int currentTime = millis();
+
+    if (currentTime - s_LedlitTime >= LED_LIGHTING_TIME_MSEC) {
+      s_LedLit = false;
+      digitalWrite(LED_BUILTIN, LOW);
+    }
+  }
 }
