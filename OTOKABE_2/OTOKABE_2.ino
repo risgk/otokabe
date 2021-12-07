@@ -50,10 +50,10 @@ SENSOR_STATE s_sensorStates[] = {
   { 0, 0, HIGH, 0, 77      }, // A5         // Sensor 18
   { 0, 0, HIGH, 0, 78      }, // A6 (D4)    // Sensor 19
   { 0, 0, HIGH, 0, 79      }, // A7 (D6)    // Sensor 20
-  { 0, 0, HIGH, 0, 80      }, // A8 (D8)    // Sensor 21
-  { 0, 0, HIGH, 0, 81      }, // A9 (D9)    // Sensor 22
-  { 0, 0, HIGH, 0, 82      }, // A10 (D10)  // Sensor 23
-  { 0, 0, HIGH, 0, 83      }, // A11 (D12)  // Sensor 24
+  { 0, 0, HIGH, 0, INVALID }, // A8 (D8)    // Sensor 21
+  { 0, 0, HIGH, 0, INVALID }, // A9 (D9)    // Sensor 22
+  { 0, 0, HIGH, 0, INVALID }, // A10 (D10)  // Sensor 23
+  { 0, 0, HIGH, 0, INVALID }, // A11 (D12)  // Sensor 24
 #endif
 };
 
