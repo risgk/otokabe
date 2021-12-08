@@ -74,7 +74,7 @@ void setup()
   for (byte analogPin = 0; analogPin < sizeof(s_sensorStates) / sizeof(SENSOR_STATE); analogPin++) {
     if (s_sensorStates[analogPin].noteNumber != INVALID) {
       int initialAnalogValue = analogRead(analogPin);
-      s_sensorStates[analogPin].analogThreshold = initialAnalogValue * 0.85;
+      s_sensorStates[analogPin].analogThreshold = initialAnalogValue * 0.8;
     }
   }
 
