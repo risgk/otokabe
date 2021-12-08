@@ -81,7 +81,7 @@ void setup()
   MIDI.setHandleNoteOn(handlerNoteOn);
   MIDI.setHandleNoteOff(handlerNoteOff);
   MIDI.setHandleControlChange(handlerControlChange);
-  MIDI.begin();
+  MIDI.begin(MIDI_CHANNEL_OMNI);
   MIDI.turnThruOff();
 
   pinMode(LED_BUILTIN, OUTPUT);
