@@ -29,21 +29,21 @@ typedef struct {
 
 SENSOR_STATE s_sensorStates[] = {
 #if (CONFIG_BOARD_NUMBER == 0)
-  { 0, 0, HIGH, 0, 83      }, // A0         // Sensor 1
+  { 0, 0, HIGH, 0, 79      }, // A0         // Sensor 1
   { 0, 0, HIGH, 0, 81      }, // A1         // Sensor 2
-  { 0, 0, HIGH, 0, 79      }, // A2         // Sensor 3
-  { 0, 0, HIGH, 0, 77      }, // A3         // Sensor 4
+  { 0, 0, HIGH, 0, 83      }, // A2         // Sensor 3
+  { 0, 0, HIGH, 0, 74      }, // A3         // Sensor 4
   { 0, 0, HIGH, 0, 76      }, // A4         // Sensor 5
-  { 0, 0, HIGH, 0, 74      }, // A5         // Sensor 6
-  { 0, 0, HIGH, 0, 72      }, // A6 (D4)    // Sensor 7
+  { 0, 0, HIGH, 0, 77      }, // A5         // Sensor 6
+  { 0, 0, HIGH, 0, 69      }, // A6 (D4)    // Sensor 7
   { 0, 0, HIGH, 0, 71      }, // A7 (D6)    // Sensor 8
-  { 0, 0, HIGH, 0, 69      }, // A8 (D8)    // Sensor 9
-  { 0, 0, HIGH, 0, 67      }, // A9 (D9)    // Sensor 10
+  { 0, 0, HIGH, 0, 72      }, // A8 (D8)    // Sensor 9
+  { 0, 0, HIGH, 0, 64      }, // A9 (D9)    // Sensor 10
   { 0, 0, HIGH, 0, 65      }, // A10 (D10)  // Sensor 11
-  { 0, 0, HIGH, 0, 64      }, // A11 (D12)  // Sensor 12
+  { 0, 0, HIGH, 0, 67      }, // A11 (D12)  // Sensor 12
 #elif (CONFIG_BOARD_NUMBER == 1)
-  { 0, 0, HIGH, 0, 62      }, // A0         // Sensor 13
-  { 0, 0, HIGH, 0, 60      }, // A1         // Sensor 14
+  { 0, 0, HIGH, 0, 60      }, // A0         // Sensor 13
+  { 0, 0, HIGH, 0, 62      }, // A1         // Sensor 14
   { 0, 0, HIGH, 1, 49      }, // A2         // Sensor 15
   { 0, 0, HIGH, 1, 38      }, // A3         // Sensor 16
   { 0, 0, HIGH, 1, 35      }, // A4         // Sensor 17
