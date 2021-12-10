@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 // Firmware for OTOKABE (Sketches for Arduino Leonardo) //
 //////////////////////////////////////////////////////////
-#define CONFIG_BOARD_NUMBER (0)  // Board 1 (TX) -> (RX) Board 0 -> (USB Host)
+#define CONFIG_BOARD_NUMBER (1)  // Board 1 (TX) -> (RX) Board 0 -> (USB Host)
                                  //                              -> (D13 LED Out)
 
 
@@ -45,11 +45,11 @@ SENSOR_STATE s_sensorStates[] = {
   { 0, 0, HIGH, 0, 60      }, // A0         // Sensor 13
   { 0, 0, HIGH, 0, 62      }, // A1         // Sensor 14
   { 0, 0, HIGH, 1, 49      }, // A2         // Sensor 15
-  { 0, 0, HIGH, 1, 38      }, // A3         // Sensor 16
-  { 0, 0, HIGH, 1, 35      }, // A4         // Sensor 17
-  { 0, 0, HIGH, 1, 39      }, // A5         // Sensor 18
-  { 0, 0, HIGH, 1, 40      }, // A6 (D4)    // Sensor 19
-  { 0, 0, HIGH, 1, 36      }, // A7 (D6)    // Sensor 20
+  { 0, 0, HIGH, 1, 42      }, // A3         // Sensor 16
+  { 0, 0, HIGH, 1, 38      }, // A4         // Sensor 17
+  { 0, 0, HIGH, 1, 50      }, // A5         // Sensor 18
+  { 0, 0, HIGH, 1, 45      }, // A6 (D4)    // Sensor 19
+  { 0, 0, HIGH, 1, 35      }, // A7 (D6)    // Sensor 20
   { 0, 0, HIGH, 0, INVALID }, // A8 (D8)    // Sensor 21
   { 0, 0, HIGH, 0, INVALID }, // A9 (D9)    // Sensor 22
   { 0, 0, HIGH, 0, INVALID }, // A10 (D10)  // Sensor 23
